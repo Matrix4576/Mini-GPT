@@ -1,20 +1,20 @@
 import PyPDF2 as pdf
 
-reader = pdf.PdfReader("train-data//b1.pdf")
-reader2 = pdf.PdfReader("train-data//b2.pdf")
+reader = pdf.PdfReader("Projects//Mini-GPT//train-data//b1.pdf")
+reader2 = pdf.PdfReader("Projects//Mini-GPT//train-data//b2.pdf")
 for i in range(len(reader.pages)):
     page = reader.pages[i]
     text = page.extract_text()
     if len(text) == 0:
         continue
     else:
-        file = open(f"sample-texts//b1//pg{i}.txt", "w")
+        file = open(f"Projects//Mini-GPT//sample-texts//b1//pg{i}.txt", "w")
         try:
             file.write(text)
             print(f"Page {i} of Book 1 extracted")
             file.close()
         except UnicodeEncodeError as UE:
-            print('Error encounterd page is skipped')
+            print('Error encountered page is skipped')
             print(UE)
             continue
 for i in range(len(reader2.pages)):
@@ -23,7 +23,7 @@ for i in range(len(reader2.pages)):
     if len(text) == 0:
         continue
     else:
-        file = open(f"sample-texts//b2//pg{i}.txt", "w")
+        file = open(f"Projects//Mini-GPT//sample-texts//b2//pg{i}.txt", "w")
         try:
             file.write(text)
             print(f"Page {i} of Book 2 extracted")

@@ -6,12 +6,12 @@ def count_files(directory):
             if entry.is_file():
                 count += 1
     return count
-count1 = count_files("sample-texts//b1")
-count2 = count_files("sample-texts//b2")
-file1 = open('sample-texts//mergedB1.txt', 'w')
-file2 = open('sample-texts//mergedB2.txt', 'w')
+count1 = count_files("Projects//Mini-GPT//sample-texts//b1")
+count2 = count_files("Projects//Mini-GPT//sample-texts//b2")
+file1 = open('Projects//Mini-GPT//sample-texts//mergedB1.txt', 'w')
+file2 = open('Projects//Mini-GPT//sample-texts//mergedB2.txt', 'w')
 for i in range(1, count1 + 1):
-    file = open(f"sample-texts//b1//pg{i}.txt", 'r')
+    file = open(f"Projects//Mini-GPT//sample-texts//b1//pg{i}.txt", 'r')
     l = file.readlines()
     if len(l) == 0:
         continue
@@ -28,7 +28,7 @@ for i in range(1, count1 + 1):
         file.close()
 file1.close()
 for i in range(1, count2 + 1):
-    file = open(f"sample-texts//b2//pg{i}.txt", 'r')
+    file = open(f"Projects//Mini-GPT//sample-texts//b2//pg{i}.txt", 'r')
     l = file.readlines()
     if len(l) == 0:
         continue

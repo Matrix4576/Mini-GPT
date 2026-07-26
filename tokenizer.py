@@ -1,7 +1,7 @@
-with open("sample-texts//mergedB1.txt", "r", encoding="utf-8") as f:
+with open("Projects//Mini-GPT//sample-texts//mergedB1.txt", "r", encoding="utf-8") as f:
     text1 = f.read()
 
-with open("sample-texts//mergedB2.txt", "r", encoding="utf-8") as f:
+with open("Projects//Mini-GPT//sample-texts//mergedB2.txt", "r", encoding="utf-8") as f:
     text2 = f.read()
 corpus = text1 + "\n" + text2
 chars = sorted(set(corpus))
