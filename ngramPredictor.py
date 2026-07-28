@@ -1,6 +1,6 @@
 from tokenizer import encode, decode, DATA
 from predictor import *
-sample = (53, 62, 57, 45)
+from wordfreq import iter_wordlist
 class TrieNode:
     def __init__(self):
         self.children = {}
@@ -34,19 +34,28 @@ class Trie:
             node = node.children[ch]
         return node.end
 
-def ngram(sample):
+trie = Trie()
+for word in iter_wordlist("en"):
+    trie.insert(word.lower())
+
+def ngram(sample, os):
     blocksize = len(sample)
     model_count = generateModel_Count(blocksize)
     model = model_count[0]
     count = model_count[1]
     try:
         possibleCHR = getPossibleChrSet(sample, model, count)
-        topPossibility = topPredictions(possibleCHR)
-        letterChosen = topPossibility[:4]
-        print(letterChosen)
+        topPossibility = topPredictions(possibleCHR, lt=5)
+        letterChosen = topPossibility # gives a list of tuples ("letter", probability)
+        retList = []
+        for letters in letterChosen:
+            os += letters[0]
+            if (trie.isPrefix(os) == True):
+                retList.append(letters)
+                os = os[:-1]
+            else:
+                os = os[:-1]
+        return retList
     except Exception as e:
-        sample = sample[-len(sample) + 1:]
-        print(decode(sample))
-        ngram(sample)
-print(decode(sample))
-ngram(sample)
+        n_sample = sample[-len(sample) + 1:]
+        return ngram(n_sample, os)

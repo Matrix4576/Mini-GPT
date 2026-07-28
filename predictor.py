@@ -31,10 +31,10 @@ def getPossibleChrSet(sample_context, model, countMap):
     for letters, counts in countYX.items():
         probabilityMap[letters] = (counts + 1)/(countMap[sample_context] + V)
     return probabilityMap
-def topPredictions(probabilityMap):
+def topPredictions(probabilityMap, lt):
     sorted_probs = sorted(
         probabilityMap.items(),
         key=lambda x: x[1],
         reverse=True
     )
-    return sorted_probs[:3]
+    return sorted_probs[:lt]
