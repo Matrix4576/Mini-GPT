@@ -1,36 +1,26 @@
-from tokenizer import decode, DATA
+from collections import defaultdict
+from tokenizer import decode, get_data
 def generateModel_Count(blockSize):
-    model = {}
-    countMap = {}
-    for i in range(len(DATA) - blockSize):
-        x = DATA[i: i + blockSize]
-        y = DATA[i + blockSize]
-        context = tuple(x)
-        if context not in countMap:
-            countMap[context] = 0
-            countMap[context] += 1
-        else:
-            countMap[context] += 1
-        if context not in model:
-            model[context] = []
-            model[context].append(y)
-        else:
-            model[context].append(y)
-    return model, countMap
+    data = get_data()
+    model = defaultdict(list)
+    countMap = defaultdict(int)
+    for i in range(len(data) - blockSize):
+        context = tuple(data[i: i + blockSize])
+        y = data[i + blockSize]
+        countMap[context] += 1
+        model[context].append(y)
+    return dict(model), dict(countMap)
 def getPossibleChrSet(sample_context, model, countMap):
     V = 50
     possibleChrSet = model[sample_context]
     countYX = {}
     for letters in possibleChrSet:
-        if decode([letters]) not in countYX:
-            countYX[decode([letters])] = 0
-            countYX[decode([letters])] += 1
-        else:
-            countYX[decode([letters])] += 1
-    probabilityMap = {}
-    for letters, counts in countYX.items():
-        probabilityMap[letters] = (counts + 1)/(countMap[sample_context] + V)
-    return probabilityMap
+        char = decode([letters])
+        countYX[char] = countYX.get(char, 0) + 1
+    return {
+        letters: (counts + 1) / (countMap[sample_context] + V)
+        for letters, counts in countYX.items()
+    }
 def topPredictions(probabilityMap, lt):
     sorted_probs = sorted(
         probabilityMap.items(),

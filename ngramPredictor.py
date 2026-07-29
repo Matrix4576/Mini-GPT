@@ -1,4 +1,4 @@
-from tokenizer import encode, decode, DATA
+from tokenizer import encode, decode
 from predictor import *
 from wordfreq import iter_wordlist
 class TrieNode:
@@ -38,7 +38,7 @@ trie = Trie()
 for word in iter_wordlist("en"):
     trie.insert(word.lower())
 
-def ngram(sample, os):
+def ngram(sample: tuple, os: str):
     blocksize = len(sample)
     model_count = generateModel_Count(blocksize)
     model = model_count[0]
@@ -56,6 +56,6 @@ def ngram(sample, os):
             else:
                 os = os[:-1]
         return retList
-    except Exception as e:
+    except KeyError:
         n_sample = sample[-len(sample) + 1:]
         return ngram(n_sample, os)
