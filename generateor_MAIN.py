@@ -24,7 +24,7 @@ def getNextLetter(sentence):
         return ""
     return getNextLetter(sentence[1:])
 
-def generate(sentence, limit=15):
+def generate(sentence, limit=20):
     sentence = list(sentence)
     for i in range(limit):
         nLetter = getNextLetter(tuple(sentence))
@@ -37,7 +37,7 @@ def generate(sentence, limit=15):
 
 
 def main():
-    prompt = input("Enter prompt >> ").strip()
+    prompt = input("Enter prompt >> ")
     encodedPrompt = tuple(encode(prompt))
     print(generate(encodedPrompt))
 

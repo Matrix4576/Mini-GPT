@@ -11,16 +11,20 @@ def generateModel_Count(blockSize):
         model[context].append(y)
     return dict(model), dict(countMap)
 def getPossibleChrSet(sample_context, model, countMap):
-    V = 50
-    possibleChrSet = model[sample_context]
+    V = len(get_data())
+    possibleChrSet = model.get(sample_context)
+    if possibleChrSet is None:
+        return {}
     countYX = {}
-    for letters in possibleChrSet:
-        char = decode([letters])
+    for token in possibleChrSet:
+        char = decode([token])
         countYX[char] = countYX.get(char, 0) + 1
+    denominator = countMap.get(sample_context, 0) + V
     return {
-        letters: (counts + 1) / (countMap[sample_context] + V)
-        for letters, counts in countYX.items()
+        char: (count + 1) / denominator
+        for char, count in countYX.items()
     }
+
 def topPredictions(probabilityMap, lt):
     sorted_probs = sorted(
         probabilityMap.items(),
