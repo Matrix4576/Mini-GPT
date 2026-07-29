@@ -24,7 +24,7 @@ def getNextLetter(sentence):
         return ""
     return getNextLetter(sentence[1:])
 
-def generate(sentence, limit=50):
+def generate(sentence, limit=15):
     sentence = list(sentence)
     for i in range(limit):
         nLetter = getNextLetter(tuple(sentence))
