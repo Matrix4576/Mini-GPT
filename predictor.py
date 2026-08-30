@@ -10,8 +10,15 @@ def generateModel_Count(blockSize):
         countMap[context] += 1
         model[context].append(y)
     return dict(model), dict(countMap)
-def getPossibleChrSet(sample_context, model, countMap):
-    V = len(get_data())
+
+
+def add_one_smoothing(countYX, sample_context, countMap, V):
+    denominator = countMap.get(sample_context, 0) + V
+    return {char: (count + 1) / denominator for char, count in countYX.items()}
+
+
+def getPossibleChrSet(sample_context, model, countMap, smoothing_fn=add_one_smoothing):
+    V = len(get_data())  # Vocabulary size / Smoothening Const
     possibleChrSet = model.get(sample_context)
     if possibleChrSet is None:
         return {}
@@ -19,11 +26,7 @@ def getPossibleChrSet(sample_context, model, countMap):
     for token in possibleChrSet:
         char = decode([token])
         countYX[char] = countYX.get(char, 0) + 1
-    denominator = countMap.get(sample_context, 0) + V
-    return {
-        char: (count + 1) / denominator
-        for char, count in countYX.items()
-    }
+    return smoothing_fn(countYX, sample_context, countMap, V)
 
 def topPredictions(probabilityMap, lt):
     sorted_probs = sorted(
